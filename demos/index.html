@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Highdmin - Responsive Bootstrap 4 Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link href='../packages/core/main.css' rel='stylesheet' />
+    <link href='../packages/daygrid/main.css' rel='stylesheet' />
+    <script src='js/jquery-1.11.3.min.js'></script>
+    <script src='../lib/moment.min.js'></script>
+    <script src='../packages/core/main.js'></script>
+    <script src='../packages/interaction/main.js'></script>
+    <script src='../packages/daygrid/main.js'></script>
+    <script src='js/popper.min.js'></script>
+    <script src='js/tooltip.min.js'></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var nowDate = new Date(); 
+        var monthName = [];
+        monthName[0] = "January";
+        monthName[1] = "February";
+        monthName[2] = "March";
+        monthName[3] = "April";
+        monthName[4] = "May";
+        monthName[5] = "June";
+        monthName[6] = "July";
+        monthName[7] = "August";
+        monthName[8] = "September";
+        monthName[9] = "October";
+        monthName[10] = "November";
+        monthName[11] = "December";
+        function getPrevNextMonthYear(calendar) {
+          var currentDate =  (typeof calendar === 'undefined') ?  new Date() : calendar.getDate();
+          var currentMonth = currentDate.getMonth();
+          var month = monthName[currentMonth];
+          var year = currentDate.getFullYear();
+          var nextMonth = currentMonth == 11 ? monthName[1] : monthName[currentMonth + 1];
+          var prevMonth  =   currentMonth == 0 ? monthName[11] : monthName[currentMonth - 1];
+          var nextYear = year+1;
+          var prevYear = year-1;
+          nextDateText = currentMonth == 11 ? (nextMonth + " " + nextYear) : (nextMonth + " " + year);
+          prevDateText = currentMonth == 0 ? (prevMonth + " " + prevYear) : (prevMonth + " " + year);
+          if(calendar) {
+            var nextMonthButton = document.getElementsByClassName("fc-custom2-button");
+            var prevMonthButton = document.getElementsByClassName("fc-custom1-button");
+            nextMonthButton[0].innerHTML = nextDateText;
+            prevMonthButton[0].innerHTML = prevDateText;
+          }
+        }
+        getPrevNextMonthYear(calendar);
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          plugins: ['dayGrid','interaction', 'timeGrid'],
+          defaultView: 'dayGridMonth',
+          defaultDate: nowDate,
+          selectable: true,
+          showNonCurrentDates:false,
+          header: {
+            left: 'prev',
+            center: 'custom1,title,custom2',
+            right: 'next'
+          },
+          customButtons: {
+            custom1: {
+              text: prevDateText,
+              click: function() {
+                calendar.prev();
+                getPrevNextMonthYear(calendar);
+              }
+            },
+            custom2: {
+              text: nextDateText,
+              click: function() {
+                calendar.next();
+                getPrevNextMonthYear(calendar);
+              }
+            }
+          },
+            eventRender: function(info) {
+                if (info.event.extendedProps.imageurl) {
+                  var node = document.createElement("img");
+                  node.src = info.event.extendedProps.imageurl;
+                  var img = info.event.extendedProps.imageurl;
+                  info.el.querySelectorAll(".fc-title")[0].appendChild(node);
+                }
+                var tooltip = new Tooltip(info.el, {
+                  title: info.event.extendedProps.description,
+                  placement: 'top',
+                  trigger: 'hover',
+                  container: 'body',
+                  html: true
+                });
+            },
+
+            events: [{
+                    title: '',
+                    description: '<div class="tutor-booked large"><div class="turtor-sm"><div class="book-details"><div class="bk-status">upcoming</div><div class="book-head clearfix"><div class="bk-time"><div class="time-range">09:00 - 11:00</div><div class="start-in">Start in 1 hour</div></div><div class="bk-date">Tuesday,<br>10 Oct 2018</div></div><div class="book-main"><div class="job-field">AERONAUTICAL AND MANUFACTURING ENGINEERING</div><div class="tt-info-box clearfix"><div class="if-col-left"><a href="" class="tt-imgbox"><img src="images/avatar-tt-1.png" alt=""></a></div><div class="if-col-right"><div class="if-name tt-if"><span class="label">Tutor:</span>Alexander L</div><div class="if-level tt-if"><span class="label">Level:</span>University</div><div class="if-duration tt-if"><span class="label">Duration:</span>120 mins</div></div></div></div><div class="book-bottom"><a href="" class="cancel cpm-btgr">Cancel</a><a href="" class="start-less cpm-bt">Start lesson</a></div></div></div></div>',
+                    start: '2019-05-01',
+                    imageurl: 'images/avatar-tt-1.png',
+                    classNames: 'evt-book'
+                },
+                {
+                    title: '',
+                    description: '<div class="tutor-booked large"><div class="turtor-sm"><div class="book-details"><div class="bk-status">upcoming</div><div class="book-head clearfix"><div class="bk-time"><div class="time-range">09:00 - 11:00</div><div class="start-in">Start in 1 hour</div></div><div class="bk-date">Tuesday,<br>10 Oct 2018</div></div><div class="book-main"><div class="job-field">AERONAUTICAL AND MANUFACTURING ENGINEERING</div><div class="tt-info-box clearfix"><div class="if-col-left"><a href="" class="tt-imgbox"><img src="images/avatar-tt-1.png" alt=""></a></div><div class="if-col-right"><div class="if-name tt-if"><span class="label">Tutor:</span>Alexander L</div><div class="if-level tt-if"><span class="label">Level:</span>University</div><div class="if-duration tt-if"><span class="label">Duration:</span>120 mins</div></div></div></div><div class="book-bottom"><a href="" class="cancel cpm-btgr">Cancel</a><a href="" class="start-less cpm-bt">Start lesson</a></div></div></div></div>',
+                    start: '2019-05-01',
+                    imageurl: 'images/avatar-tt-1.png',
+                    classNames: 'evt-book'
+                },
+                {
+                    title: '+3',
+                    description: '<div class="tutor-booked large"><div class="turtor-sm"><div class="book-details"><div class="bk-status">upcoming</div><div class="book-head clearfix"><div class="bk-time"><div class="time-range">09:00 - 11:00</div><div class="start-in">Start in 1 hour</div></div><div class="bk-date">Tuesday,<br>10 Oct 2018</div></div><div class="book-main"><div class="job-field">AERONAUTICAL AND MANUFACTURING ENGINEERING</div><div class="tt-info-box clearfix"><div class="if-col-left"><a href="" class="tt-imgbox"><img src="images/avatar-tt-1.png" alt=""></a></div><div class="if-col-right"><div class="if-name tt-if"><span class="label">Tutor:</span>Alexander L</div><div class="if-level tt-if"><span class="label">Level:</span>University</div><div class="if-duration tt-if"><span class="label">Duration:</span>120 mins</div></div></div></div><div class="book-bottom"><a href="" class="cancel cpm-btgr">Cancel</a><a href="" class="start-less cpm-bt">Start lesson</a></div></div></div></div><div class="tutor-booked large"><div class="turtor-sm"><div class="book-details"><div class="bk-status">upcoming</div><div class="book-head clearfix"><div class="bk-time"><div class="time-range">09:00 - 11:00</div><div class="start-in">Start in 1 hour</div></div><div class="bk-date">Tuesday,<br>10 Oct 2018</div></div><div class="book-main"><div class="job-field">AERONAUTICAL AND MANUFACTURING ENGINEERING</div><div class="tt-info-box clearfix"><div class="if-col-left"><a href="" class="tt-imgbox"><img src="images/avatar-tt-1.png" alt=""></a></div><div class="if-col-right"><div class="if-name tt-if"><span class="label">Tutor:</span>Alexander L</div><div class="if-level tt-if"><span class="label">Level:</span>University</div><div class="if-duration tt-if"><span class="label">Duration:</span>120 mins</div></div></div></div><div class="book-bottom"><a href="" class="cancel cpm-btgr">Cancel</a><a href="" class="start-less cpm-bt">Start lesson</a></div></div></div></div><div class="tutor-booked large"><div class="turtor-sm"><div class="book-details"><div class="bk-status">upcoming</div><div class="book-head clearfix"><div class="bk-time"><div class="time-range">09:00 - 11:00</div><div class="start-in">Start in 1 hour</div></div><div class="bk-date">Tuesday,<br>10 Oct 2018</div></div><div class="book-main"><div class="job-field">AERONAUTICAL AND MANUFACTURING ENGINEERING</div><div class="tt-info-box clearfix"><div class="if-col-left"><a href="" class="tt-imgbox"><img src="images/avatar-tt-1.png" alt=""></a></div><div class="if-col-right"><div class="if-name tt-if"><span class="label">Tutor:</span>Alexander L</div><div class="if-level tt-if"><span class="label">Level:</span>University</div><div class="if-duration tt-if"><span class="label">Duration:</span>120 mins</div></div></div></div><div class="book-bottom"><a href="" class="cancel cpm-btgr">Cancel</a><a href="" class="start-less cpm-bt">Start lesson</a></div></div></div></div>',
+                    start: '2019-05-01',
+                    classNames: 'more-booked'
+                },
+                {
+                    title: 'Long Event',
+                    description: 'description for Long Event',
+                    start: '2019-05-07',
+                    end: '2019-05-10'
+                },
+                {
+                    groupId: '999',
+                    title: 'Repeating Event',
+                    description: 'description for Repeating Event',
+                    start: '2019-05-09T16:00:00'
+                },
+                {
+                    groupId: '999',
+                    title: 'Repeating Event',
+                    description: 'description for Repeating Event',
+                    start: '2019-05-16T16:00:00'
+                },
+                {
+                    title: 'Conference',
+                    description: 'description for Conference',
+                    start: '2019-05-11',
+                    end: '2019-05-13'
+                },
+                {
+                    title: 'Meeting',
+                    description: 'description for Meeting',
+                    start: '2019-05-12T10:30:00',
+                    end: '2019-05-12T12:30:00'
+                },
+                {
+                    title: 'Lunch',
+                    description: 'description for Lunch',
+                    start: '2019-05-12T12:00:00'
+                },
+                {
+                    title: 'Meeting',
+                    description: 'description for Meeting',
+                    start: '2019-05-12T14:30:00'
+                },
+                {
+                    title: 'Birthday Party',
+                    description: 'description for Birthday Party',
+                    start: '2019-05-13T07:00:00'
+                },
+                {
+                    title: 'Click for Google',
+                    description: 'description for Click for Google',
+                    url: 'http://google.com/',
+                    start: '2019-05-28'
+                }
+            ]
+        });
+        calendar.render();
+
+        var prveButton = document.getElementsByClassName('fc-prev-button');
+        var nextButton = document.getElementsByClassName('fc-next-button');
+        for (var i = 0; i < prveButton.length; i++) {
+          prveButton[i].addEventListener('click', function() {
+            getPrevNextMonthYear(calendar);
+          });
+        }
+        for (var i = 0; i < nextButton.length; i++) {
+          nextButton[i].addEventListener('click', function() {
+            getPrevNextMonthYear(calendar);
+          });
+        }
+    });
+    </script>
+    <style>
+    body {
+        margin: 40px 10px;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+    div.tooltip:after {
+        content: '';
+        width: 50px;
+        height: 20px;
+        top: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+    div.tooltip[x-placement^="bottom"]:after {
+      top: initial;
+      bottom: 100%;
+    }
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .evt-book {
+        width: 19px;
+        height: 19px;
+        float: right;
+    }
+    img {
+      max-width: 100%;
+      display: inline-block;
+      height: auto;
+    }
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+    .user-dashboard .tutor-booked {
+        float: left;
+    }
+    @media (max-width: 767px) {
+        .user-dashboard .tutor-booked {
+            display: none;
+        }
+    }
+
+    .user-dashboard .tutor-booked .more-booked {
+        width: 16px;
+        height: 16px;
+        white-space: nowrap;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .more-book-box {
+        display: inline-block;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .book-details {
+        display: inline-block;
+        margin-left: -6px;
+        box-shadow: none;
+        border: none;
+        padding-right: 5px;
+        top: initial;
+        left: initial;
+        overflow: hidden;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .book-details .bk-status {
+        border-radius: 0 0 5px 0;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .book-details:first-child {
+        margin-left: 0;
+        border-top-left-radius: 10px;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .book-details:last-child {
+        padding-right: 0;
+        border-top-right-radius: 10px;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .book-details:before {
+        content: initial;
+    }
+
+    .user-dashboard .tutor-booked .more-booked:hover .job-field {
+        white-space: normal;
+    }
+
+    .user-dashboard .tutor-booked .more-booked>a {
+        display: block;
+        background: #00cbc8;
+        border-radius: 50%;
+        margin-top: -4px;
+        position: relative;
+        right: -3px;
+        letter-spacing: 0.7px;
+        line-height: 16px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .user-dashboard .tutor-booked .more-book-box {
+        display: inline-block;
+        top: -274px;
+        left: -87px;
+        position: relative;
+        border: 1px solid #d5d5d5;
+        border-radius: 10px;
+        background: #fff;
+        display: none;
+    }
+
+    .user-dashboard .tutor-booked .more-book-box .book-details {
+        position: relative;
+        border-radius: 0;
+    }
+
+    .user-dashboard .tutor-booked .more-book-box:before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #fff;
+        border-top: 1px solid #d5d5d5;
+        border-left: 1px solid #d5d5d5;
+        border-right: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        left: 13.8%;
+        bottom: -6px;
+        transform: rotate(-135deg);
+    }
+
+    .user-dashboard .tutor-booked .more-book-box:after {
+        content: '';
+        width: 100%;
+        bottom: -10px;
+        position: absolute;
+        height: 10px;
+        left: 0;
+    }
+
+    .user-dashboard {
+        margin-bottom: 50px;
+        padding: 30px;
+        padding-top: 195px;
+    }
+
+    .user-dashboard .turtor-sm {
+        position: relative;
+        width: 221px;
+    }
+
+    .user-dashboard .turtor-sm:hover .book-details {
+        display: block;
+    }
+
+    .user-dashboard .turtor-sm a.stick-avatar {
+        display: block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        overflow: hidden;
+        line-height: 0;
+    }
+.user-dashboard .tooltip {
+  width: initial;
+}
+    .user-dashboard .book-details {
+        box-shadow: 0 4px 8px 0 #dadada;
+        background-color: #ffffff;
+        border: 1px solid #d5d5d5;
+        text-align: left;
+        border-radius: 10px;
+        display: block;
+    }
+
+    .user-dashboard .book-details:before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #fff;
+        border-top: 1px solid #d5d5d5;
+        border-left: 1px solid #d5d5d5;
+        border-right: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        left: 42%;
+        bottom: -6px;
+        transform: rotate(-135deg);
+    }
+
+    .user-dashboard .book-details .bk-status {
+        position: absolute;
+        width: 90px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        color: #ffffff;
+        text-align: center;
+        height: 20px;
+        line-height: 21px;
+        top: 0;
+        left: 0;
+        background: #00a7df;
+        text-transform: uppercase;
+        border-radius: 9px 0 5px 0;
+    }
+
+    .user-dashboard .book-details .bk-time {
+        float: left;
+        width: 63.8%;
+    }
+
+    .user-dashboard .book-details .bk-date {
+        float: left;
+        font-size: 12px;
+        line-height: 1.42;
+        color: #30305e;
+        width: 36.2%;
+        padding-left: 6px;
+        white-space: nowrap;
+        position: relative;
+        top: 7px;
+    }
+
+    .user-dashboard .book-details .time-range {
+        font-size: 20px;
+        font-weight: 600;
+        color: #30305e;
+    }
+
+    .user-dashboard .book-details .start-in {
+        font-size: 12px;
+        color: #d52110;
+        margin-top: 2px;
+    }
+
+    .user-dashboard .book-details .start-in:before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: url(images/icon-time.png) center no-repeat;
+        background-size: contain;
+        position: relative;
+        top: 2px;
+        margin-right: 6px;
+    }
+
+    .user-dashboard .book-details .book-head {
+        margin-bottom: 14px;
+        padding: 27px 10px 9px;
+        background: #f7f7f7;
+        border-top-right-radius: 10px;
+    }
+
+    .user-dashboard .book-details .book-main {
+        padding: 0 10px;
+    }
+
+    .user-dashboard .book-details .book-bottom {
+        padding: 0 10px 9px;
+    }
+
+    .user-dashboard .book-details .job-field {
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 1.27;
+        letter-spacing: 0.3px;
+        text-align: center;
+        color: #30305e;
+        margin-bottom: 10px;
+    }
+
+    .user-dashboard .book-details .if-col-left {
+        width: 21%;
+        float: left;
+        padding-left: 8px;
+    }
+
+    .user-dashboard .book-details .tt-imgbox {
+        line-height: 0;
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        top: 12px;
+    }
+
+    .user-dashboard .book-details .if-col-right {
+        width: 79%;
+        float: left;
+        padding-left: 15px;
+    }
+
+    .user-dashboard .book-details .if-col-right .tt-if {
+        font-size: 11px;
+        font-weight: normal;
+        line-height: 1.55;
+        color: #4a4a4a;
+        margin-bottom: 2px;
+    }
+
+    .user-dashboard .book-details .if-col-right .label {
+        padding: 0;
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1.9;
+        color: #30305e;
+        display: inline-block;
+        width: 37%;
+        text-align: left;
+    }
+
+    .user-dashboard .book-details .book-bottom a {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 800;
+        height: 22px;
+        line-height: 22px;
+        padding: 0 14px;
+    }
+
+    .user-dashboard .book-details .book-bottom a.start-less {
+        line-height: 23px;
+    }
+    .user-dashboard .more-booked {
+      width: 16px;
+      height: 16px;
+      white-space: nowrap;
+      float: right;
+      background: #00cbc8;
+      border-radius: 50%;
+      border: none;
+      letter-spacing: 0.7px;
+      line-height: 16px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #ffffff;
+      display: block;
+    }
+    /*
+i wish this required CSS was better documented :(
+https://github.com/FezVrasta/popper.js/issues/674
+derived from this CSS on this page: https://popper.js.org/tooltip-examples.html
+*/
+
+    .popper,
+    .tooltip {
+        position: absolute;
+        z-index: 9999;
+        background: #FFC107;
+        color: black;
+        width: 150px;
+        border-radius: 3px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        text-align: center;
+    }
+
+    .style5 .tooltip {
+        background: #1E252B;
+        color: #FFFFFF;
+        max-width: 200px;
+        width: auto;
+        font-size: .8rem;
+        padding: .5em 1em;
+    }
+
+    .popper .popper__arrow,
+    .tooltip .tooltip-arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+        margin: 5px;
+    }
+
+    .tooltip .tooltip-arrow,
+    .popper .popper__arrow {
+        border-color: #FFC107;
+    }
+
+    .style5 .tooltip .tooltip-arrow {
+        border-color: #1E252B;
+    }
+
+    .popper[x-placement^="top"],
+    .tooltip[x-placement^="top"] {
+        margin-bottom: 5px;
+    }
+
+    .popper[x-placement^="top"] .popper__arrow,
+    .tooltip[x-placement^="top"] .tooltip-arrow {
+        border-width: 5px 5px 0 5px;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        bottom: -5px;
+        left: calc(50% - 5px);
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .popper[x-placement^="bottom"],
+    .tooltip[x-placement^="bottom"] {
+        margin-top: 5px;
+    }
+
+    .tooltip[x-placement^="bottom"] .tooltip-arrow,
+    .popper[x-placement^="bottom"] .popper__arrow {
+        border-width: 0 5px 5px 5px;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        top: -5px;
+        left: calc(50% - 5px);
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .tooltip[x-placement^="right"],
+    .popper[x-placement^="right"] {
+        margin-left: 5px;
+    }
+
+    .popper[x-placement^="right"] .popper__arrow,
+    .tooltip[x-placement^="right"] .tooltip-arrow {
+        border-width: 5px 5px 5px 0;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        left: -5px;
+        top: calc(50% - 5px);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .popper[x-placement^="left"],
+    .tooltip[x-placement^="left"] {
+        margin-right: 5px;
+    }
+
+    .popper[x-placement^="left"] .popper__arrow,
+    .tooltip[x-placement^="left"] .tooltip-arrow {
+        border-width: 5px 0 5px 5px;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        right: -5px;
+        top: calc(50% - 5px);
+        margin-left: 0;
+        margin-right: 0;
+    }
+    </style>
+</head>
+
+<body class="user-dashboard">
+    <div id='calendar'></div>
+</body>
+
+</html>
