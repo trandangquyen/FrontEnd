@@ -1,0 +1,15 @@
+<snippet>
+	<content><![CDATA[
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+line-height: 16px$1;
+max-height: 32px;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>limit</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
