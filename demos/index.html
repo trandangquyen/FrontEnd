@@ -8,9 +8,8 @@
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <link href='../packages/core/main.css' rel='stylesheet' />
-    <link href='../packages/daygrid/main.css' rel='stylesheet' />
+    <link href='../packages/core/fullcalendar-main.css' rel='stylesheet' />
+    <link href='../packages/daygrid/fullcalendar-daygrid-main.css' rel='stylesheet' />
     <script src='js/jquery-1.11.3.min.js'></script>
     <script src='../lib/moment.min.js'></script>
     <script src='../packages/core/main.js'></script>
@@ -21,7 +20,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var nowDate = new Date(); 
+        var nowDate = new Date();
         var monthName = [];
         monthName[0] = "January";
         monthName[1] = "February";
@@ -35,65 +34,66 @@
         monthName[9] = "October";
         monthName[10] = "November";
         monthName[11] = "December";
+
         function getPrevNextMonthYear(calendar) {
-          var currentDate =  (typeof calendar === 'undefined') ?  new Date() : calendar.getDate();
-          var currentMonth = currentDate.getMonth();
-          var month = monthName[currentMonth];
-          var year = currentDate.getFullYear();
-          var nextMonth = currentMonth == 11 ? monthName[1] : monthName[currentMonth + 1];
-          var prevMonth  =   currentMonth == 0 ? monthName[11] : monthName[currentMonth - 1];
-          var nextYear = year+1;
-          var prevYear = year-1;
-          nextDateText = currentMonth == 11 ? (nextMonth + " " + nextYear) : (nextMonth + " " + year);
-          prevDateText = currentMonth == 0 ? (prevMonth + " " + prevYear) : (prevMonth + " " + year);
-          if(calendar) {
-            var nextMonthButton = document.getElementsByClassName("fc-custom2-button");
-            var prevMonthButton = document.getElementsByClassName("fc-custom1-button");
-            nextMonthButton[0].innerHTML = nextDateText;
-            prevMonthButton[0].innerHTML = prevDateText;
-          }
+            var currentDate = (typeof calendar === 'undefined') ? new Date() : calendar.getDate();
+            var currentMonth = currentDate.getMonth();
+            var month = monthName[currentMonth];
+            var year = currentDate.getFullYear();
+            var nextMonth = currentMonth == 11 ? monthName[1] : monthName[currentMonth + 1];
+            var prevMonth = currentMonth == 0 ? monthName[11] : monthName[currentMonth - 1];
+            var nextYear = year + 1;
+            var prevYear = year - 1;
+            nextDateText = currentMonth == 11 ? (nextMonth + " " + nextYear) : (nextMonth + " " + year);
+            prevDateText = currentMonth == 0 ? (prevMonth + " " + prevYear) : (prevMonth + " " + year);
+            if (calendar) {
+                var nextMonthButton = document.getElementsByClassName("fc-custom2-button");
+                var prevMonthButton = document.getElementsByClassName("fc-custom1-button");
+                nextMonthButton[0].innerHTML = nextDateText;
+                prevMonthButton[0].innerHTML = prevDateText;
+            }
         }
         getPrevNextMonthYear(calendar);
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          plugins: ['dayGrid','interaction', 'timeGrid'],
-          defaultView: 'dayGridMonth',
-          defaultDate: nowDate,
-          selectable: true,
-          showNonCurrentDates:false,
-          header: {
-            left: 'prev',
-            center: 'custom1,title,custom2',
-            right: 'next'
-          },
-          customButtons: {
-            custom1: {
-              text: prevDateText,
-              click: function() {
-                calendar.prev();
-                getPrevNextMonthYear(calendar);
-              }
+            plugins: ['dayGrid', 'interaction', 'timeGrid'],
+            defaultView: 'dayGridMonth',
+            defaultDate: nowDate,
+            selectable: true,
+            showNonCurrentDates: false,
+            header: {
+                left: 'prev',
+                center: 'custom1,title,custom2',
+                right: 'next'
             },
-            custom2: {
-              text: nextDateText,
-              click: function() {
-                calendar.next();
-                getPrevNextMonthYear(calendar);
-              }
-            }
-          },
+            customButtons: {
+                custom1: {
+                    text: prevDateText,
+                    click: function() {
+                        calendar.prev();
+                        getPrevNextMonthYear(calendar);
+                    }
+                },
+                custom2: {
+                    text: nextDateText,
+                    click: function() {
+                        calendar.next();
+                        getPrevNextMonthYear(calendar);
+                    }
+                }
+            },
             eventRender: function(info) {
                 if (info.event.extendedProps.imageurl) {
-                  var node = document.createElement("img");
-                  node.src = info.event.extendedProps.imageurl;
-                  var img = info.event.extendedProps.imageurl;
-                  info.el.querySelectorAll(".fc-title")[0].appendChild(node);
+                    var node = document.createElement("img");
+                    node.src = info.event.extendedProps.imageurl;
+                    var img = info.event.extendedProps.imageurl;
+                    info.el.querySelectorAll(".fc-title")[0].appendChild(node);
                 }
                 var tooltip = new Tooltip(info.el, {
-                  title: info.event.extendedProps.description,
-                  placement: 'top',
-                  trigger: 'hover',
-                  container: 'body',
-                  html: true
+                    title: info.event.extendedProps.description,
+                    placement: 'top',
+                    trigger: 'hover',
+                    container: 'body',
+                    html: true
                 });
             },
 
@@ -175,14 +175,14 @@
         var prveButton = document.getElementsByClassName('fc-prev-button');
         var nextButton = document.getElementsByClassName('fc-next-button');
         for (var i = 0; i < prveButton.length; i++) {
-          prveButton[i].addEventListener('click', function() {
-            getPrevNextMonthYear(calendar);
-          });
+            prveButton[i].addEventListener('click', function() {
+                getPrevNextMonthYear(calendar);
+            });
         }
         for (var i = 0; i < nextButton.length; i++) {
-          nextButton[i].addEventListener('click', function() {
-            getPrevNextMonthYear(calendar);
-          });
+            nextButton[i].addEventListener('click', function() {
+                getPrevNextMonthYear(calendar);
+            });
         }
     });
     </script>
@@ -193,6 +193,7 @@
         font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
         font-size: 14px;
     }
+
     div.tooltip:after {
         content: '';
         width: 50px;
@@ -203,24 +204,29 @@
         right: 0;
         margin: 0 auto;
     }
+
     div.tooltip[x-placement^="bottom"]:after {
-      top: initial;
-      bottom: 100%;
+        top: initial;
+        bottom: 100%;
     }
+
     #calendar {
         max-width: 900px;
         margin: 0 auto;
     }
+
     .evt-book {
         width: 19px;
         height: 19px;
         float: right;
     }
+
     img {
-      max-width: 100%;
-      display: inline-block;
-      height: auto;
+        max-width: 100%;
+        display: inline-block;
+        height: auto;
     }
+
     html,
     body {
         margin: 0;
@@ -233,9 +239,11 @@
         max-width: 900px;
         margin: 40px auto;
     }
+
     .user-dashboard .tutor-booked {
         float: left;
     }
+
     @media (max-width: 767px) {
         .user-dashboard .tutor-booked {
             display: none;
@@ -362,9 +370,11 @@
         overflow: hidden;
         line-height: 0;
     }
-.user-dashboard .tooltip {
-  width: initial;
-}
+
+    .user-dashboard .tooltip {
+        width: initial;
+    }
+
     .user-dashboard .book-details {
         box-shadow: 0 4px 8px 0 #dadada;
         background-color: #ffffff;
@@ -526,21 +536,23 @@
     .user-dashboard .book-details .book-bottom a.start-less {
         line-height: 23px;
     }
+
     .user-dashboard .more-booked {
-      width: 16px;
-      height: 16px;
-      white-space: nowrap;
-      float: right;
-      background: #00cbc8;
-      border-radius: 50%;
-      border: none;
-      letter-spacing: 0.7px;
-      line-height: 16px;
-      font-size: 10px;
-      font-weight: 800;
-      color: #ffffff;
-      display: block;
+        width: 16px;
+        height: 16px;
+        white-space: nowrap;
+        float: right;
+        background: #00cbc8;
+        border-radius: 50%;
+        border: none;
+        letter-spacing: 0.7px;
+        line-height: 16px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #ffffff;
+        display: block;
     }
+
     /*
 i wish this required CSS was better documented :(
 https://github.com/FezVrasta/popper.js/issues/674
@@ -658,7 +670,7 @@ derived from this CSS on this page: https://popper.js.org/tooltip-examples.html
 </head>
 
 <body class="user-dashboard">
-    <div id='calendar'></div>
+    <div id='calendar' class="calendar-table"></div>
 </body>
 
 </html>
