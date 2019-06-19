@@ -29,6 +29,9 @@
                     containment: '#content',
                     stack: '#tag-choice div',
                     cursor: 'move',
+                    drag: function( event, ui ) {
+                    	// console.log($(this));
+                    },
                     revert: function(event, ui) {
 			            // on older version of jQuery use "draggable"
 			            // $(this).data("draggable")
@@ -84,6 +87,17 @@
         	// console.log($(this).data('number'))
         	// console.log(ui.draggable.data('number'))
         	//element dropped
+        	if ($(this).data('prevParent') == '' )
+        	{
+        		prevParent = $(this).parent().attr('id') ;
+        		ui.draggable.data('prevParent',prevParent);
+        	}
+        	else {
+
+        	}
+
+
+
         	console.log($(this).data('emlDropped'));
         	//check if parent has no element
         	if ($(this).data('emlDropped') == '') {
@@ -93,8 +107,7 @@
 	    		console.log($(this).data('emlDropped'));
 	    		//parent of this drag
 	    		//asign prev parent
-	    		var prevParent = $(this).parent().attr('id') ;
-	    		console.log(prevParent);
+
 	    		var curParent = $(this).parent().attr('id');
 	    		console.log(curParent);
 	    		
