@@ -176,19 +176,21 @@
             console.log(dataParentOld)
             ui.draggable.data('ParentOld',currentParentId)
             // console.log(ui.draggable.data('ParentOld'))
+            console.log(ui.draggable.attr('class'))
+            if (ui.draggable.hasClass('ui-draggable')|| ui.draggable.hasClass('top')) {
+            	console.log(123)
+            	// console.log(ui.draggable.attr('class'))
+            	$('.'+currentParentId).css({
+            		top: '0',
+            		left: '0'
+            	});
+            	$('.'+currentParentId).removeAttr('class').addClass('top');
+            	$('.'+currentParentId).data('ParentOld','');
+            }
             if($('.'+currentParentId).length !=0 ) {
             	// console.log(123)
             	// $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
-            	if(ui.draggable.data('ParentOld') ) {
-            		$('.'+currentParentId).css({
-	            		top: '0',
-	            		left: '0'
-	            	});
-	            	$('.'+currentParentId).removeAttr('class')
-            	}
-            	else {
-            		$('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
-            	}
+
             	$('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
             	
             	$('.'+currentParentId).data('ParentOld',dataParentOld)
