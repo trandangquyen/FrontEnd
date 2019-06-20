@@ -42,6 +42,7 @@
 			                top : 0,
 			                left : 0
 			            };
+
 			            // console.log( $(this).data("uiDraggable"));
 			            // return boolean
 			            return !event;
@@ -72,6 +73,8 @@
 			                top : 0,
 			                left : 0
 			            };
+                       console.log(ui)
+                       ui.draggable.removeAttr('class')
 			            // return boolean
 			            return !event;
 			            // that evaluate like this:
