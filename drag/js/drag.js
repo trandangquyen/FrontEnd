@@ -22,7 +22,7 @@
             
             // Create the pile of shuffled cards
             var numbers = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
-            numbers.sort(function() { return Math.random() - .5 });
+            // numbers.sort(function() { return Math.random() - .5 });
 
             for (var i = 0; i < 10; i++) {
                 $('<div>' + numbers[i] + '</div>').data({'number': numbers[i],'curParent':'','prevParent':''}).attr('id', 'card' + numbers[i]).appendTo('#tag-choice').draggable({
@@ -30,7 +30,7 @@
                     stack: '#tag-choice div',
                     cursor: 'move',
                     drag: function( event, ui ) {
-                    	// console.log($(this));
+                    	// console.log($(this)); 
                     },
                     revert: function(event, ui) {
 			            // on older version of jQuery use "draggable"
@@ -87,51 +87,51 @@
         	// console.log($(this).data('number'))
         	// console.log(ui.draggable.data('number'))
         	//element dropped
-        	if ($(this).data('prevParent') == '' )
-        	{
-        		prevParent = $(this).parent().attr('id') ;
-        		ui.draggable.data('prevParent',prevParent);
-        	}
-        	else {
+        	// if ($(this).data('prevParent') == '' )
+        	// {
+        	// 	prevParent = $(this).parent().attr('id') ;
+        	// 	ui.draggable.data('prevParent',prevParent);
+        	// }
+        	// else {
 
-        	}
+        	// }
 
 
 
-        	console.log($(this).data('emlDropped'));
+        	// console.log($(this).data('emlDropped'));
         	//check if parent has no element
-        	if ($(this).data('emlDropped') == '') {
-    			var emlDropped = ui.draggable.data('number') || '';
+       //  	if ($(this).data('emlDropped') == '') {
+    			// var emlDropped = ui.draggable.data('number') || '';
 	    		//asign name element dropped for this parent 
-	    		$(this).data('emlDropped', emlDropped);
-	    		console.log($(this).data('emlDropped'));
+	    		// $(this).data('emlDropped', emlDropped);
+	    		// console.log($(this).data('emlDropped'));
 	    		//parent of this drag
 	    		//asign prev parent
 
-	    		var curParent = $(this).parent().attr('id');
-	    		console.log(curParent);
+	    		// var curParent = $(this).parent().attr('id');
+	    		// console.log(curParent);
 	    		
 	    		
 	    		//asign parent for this drag item 
-	    		ui.draggable.data('curParent',curParent);
+	    	// 	ui.draggable.data('curParent',curParent);
 	    		
-    		}
+    		// }
     		// else if parent has an element
-    		else {
+    		// else {
     			//swap the position of an existing element
     			// console.log($(this).parent());
-    			$('#card'+$(this).data('emlDropped')).position({ of:$(this).parent(), my: 'left top', at: 'left top' });
-    		}
+    			// $('#card'+$(this).data('emlDropped')).position({ of:$(this).parent(), my: 'left top', at: 'left top' });
+    		// }
 
     		// check if this parent has element
     		
             var slotNumber = $(this).data('number');
             var cardNumber = ui.draggable.data('number');
             var $this = $(this);
-            console.log($this)
-            var li1 = ui.draggable.text()
+            // console.log($this)
+            // var li1 = ui.draggable.text()
             // console.log(li1);
-         	var li2 = $(this).text();
+         	// var li2 = $(this).text();
      		// console.log(li2);
      		// console.log( emldropped);
      		// console.log($('#cardTutor'));
@@ -149,7 +149,7 @@
                 ui.draggable.draggable('enable');
                 $(this).droppable('enable');
                 ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
-                $('#cardTutor').position({ of: $('#cardSlots-Rooms'), my: 'left top', at: 'left top' });
+                // $('#cardTutor').position({ of: $('#cardSlots-Rooms'), my: 'left top', at: 'left top' });
                 // ui.draggable.draggable('option', 'revert', false);
                 // correctCards++;
                 // ui.draggable.draggable( "enable" );
@@ -170,6 +170,36 @@
             //         opacity: 1
             //     });
             // }
+            var currentParentId =  $(this).parent().attr('id');
+            console.log(currentParentId)
+            var dataParentOld = ui.draggable.data('ParentOld') ? ui.draggable.data('ParentOld') : currentParentId;
+            console.log(dataParentOld)
+            ui.draggable.data('ParentOld',currentParentId)
+            // console.log(ui.draggable.data('ParentOld'))
+            if($('.'+currentParentId).length !=0 ) {
+            	// console.log(123)
+            	// $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+            	if(ui.draggable.data('ParentOld') ) {
+            		$('.'+currentParentId).css({
+	            		top: '0',
+	            		left: '0'
+	            	});
+	            	$('.'+currentParentId).removeAttr('class')
+            	}
+            	else {
+            		$('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+            	}
+            	$('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+            	
+            	$('.'+currentParentId).data('ParentOld',dataParentOld)
+            	$('.'+currentParentId).removeAttr('class').addClass(dataParentOld)
+
+            	ui.draggable.removeAttr('class').addClass(currentParentId)
+            }
+            else {
+
+            	ui.draggable.removeAttr('class').addClass(currentParentId)
+            }
 
         }
         function handleCardDropOut(event, ui) {
