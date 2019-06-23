@@ -24,8 +24,8 @@
             var numbers = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
             // numbers.sort(function() { return Math.random() - .5 });
 
-            for (var i = 0; i < 10; i++) {
-                $('<div>' + numbers[i] + '</div>').data({'number': numbers[i],'curParent':'','prevParent':''}).attr('id', 'card' + numbers[i]).appendTo('#tag-choice').draggable({
+            for (var i = 0; i < numbers.length; i++) {
+                $('<div>' + numbers[i] + '</div>').data({'number': numbers[i],'curParent':'','prevParent':'','onBar': true}).attr('id', 'card' + numbers[i]).appendTo('#tag-choice').draggable({
                     containment: '#content',
                     stack: '#tag-choice div',
                     cursor: 'move',
@@ -37,14 +37,32 @@
 			            // $(this).data("draggable")
 			            // on 2.x versions of jQuery use "ui-draggable"
 			            // $(this).data("ui-draggable")
-			            // console.log( $(this).data("uiDraggable"));
+                        // console.log($(this).data());
+                        // console.log( $(this).data("uiDraggable").originalPosition );
+                        // console.log($(this));
 			            $(this).data("uiDraggable").originalPosition = {
 			                top : 0,
 			                left : 0
 			            };
-
-			            // console.log( $(this).data("uiDraggable"));
+			            
 			            // return boolean
+                        // console.log(!event);
+                        // console.log($(this).data());
+                        var className = $(this).data('ParentOld')
+                        if(!event) {
+                            $(this).css({
+                                position: 'relative',
+                                top : '0',
+                                left: '0'
+                            });
+                            $(this).data('onBar', true)
+                            $(this).removeClass(className)
+
+                        }
+                        else {
+                            $(this).data('onBar', false)
+                        }
+                        console.log($(this).data('onBar'));
 			            return !event;
 			            // that evaluate like this:
 			            // return event !== false ? false : true;
@@ -52,11 +70,11 @@
                 });
             }
 
-            // Create the card slots
+            // Create the word slots
             var words = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
-            for (var i = 1; i <= 10; i++) {
+            for (var i = 1; i <= words.length ; i++) {
             	// console.log('#cardSlots-'+words[i - 1])
-                $('<div>' + words[i - 1] + '</div>').data({'number': words[i - 1], 'emlDropped': ''}).appendTo('#cardSlots-'+words[i - 1]).droppable({
+                $('<div>' + words[i - 1] + '</div>').data({'number': words[i - 1], 'onBar': true}).appendTo('#cardSlots-'+words[i - 1]).droppable({
                     accept: '#tag-choice div',
                     hoverClass: 'hovered',
                     drop: handleCardDrop,
@@ -74,7 +92,7 @@
 			                left : 0
 			            };
                        console.log(ui)
-                       ui.draggable.removeAttr('class')
+                       // ui.draggable.removeAttr('class')
 			            // return boolean
 			            return !event;
 			            // that evaluate like this:
@@ -151,7 +169,7 @@
                 ui.draggable.addClass('correct');
                 ui.draggable.draggable('enable');
                 $(this).droppable('enable');
-                ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
+                // ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
                 // $('#cardTutor').position({ of: $('#cardSlots-Rooms'), my: 'left top', at: 'left top' });
                 // ui.draggable.draggable('option', 'revert', false);
                 // correctCards++;
@@ -173,38 +191,68 @@
             //         opacity: 1
             //     });
             // }
+            console.log(ui.draggable.data('onBar'));
             var currentParentId =  $(this).parent().attr('id');
             console.log(currentParentId)
             var dataParentOld = ui.draggable.data('ParentOld') ? ui.draggable.data('ParentOld') : currentParentId;
-            console.log(dataParentOld)
+            // console.log(dataParentOld)
             ui.draggable.data('ParentOld',currentParentId)
             // console.log(ui.draggable.data('ParentOld'))
-            console.log(ui.draggable.attr('class'))
-            if (ui.draggable.hasClass('ui-draggable')|| ui.draggable.hasClass('top')) {
+            // console.log( ui.draggable.attr('class'))
+            // ui.draggable.data('onBar',false)
+            console.log( ui.draggable.data('onBar'));
+
+            // nếu phần tử được kéo từ trên bar
+            if (ui.draggable.data('onBar')) {
             	console.log(123)
             	// console.log(ui.draggable.attr('class'))
+                
+                //đưa phần tử đã có về vị trí trên bar
             	$('.'+currentParentId).css({
             		top: '0',
             		left: '0'
             	});
-            	$('.'+currentParentId).removeAttr('class').addClass('top');
-            	$('.'+currentParentId).data('ParentOld','');
-            }
-            if($('.'+currentParentId).length !=0 ) {
-            	// console.log(123)
-            	// $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+                // $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+            	// $('.'+currentParentId).removeAttr('class').addClass('top');
+                //đổi position cho phần tử đã có.
+                $('.'+currentParentId).css('position', 'relative'); 
+                $('.'+currentParentId).data('onBar',true).removeClass(currentParentId);
 
-            	$('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
-            	
-            	$('.'+currentParentId).data('ParentOld',dataParentOld)
-            	$('.'+currentParentId).removeAttr('class').addClass(dataParentOld)
+                
+                // $('.top').data('onBar',true);
+                // định vị phần tử đang kéo 
+                // ui.draggable.removeAttr('class').addClass(currentParentId)
+                ui.draggable.removeClass(dataParentOld).addClass(currentParentId)
+                //đổi position cho phần tử đang kéo
+                ui.draggable.css('position', 'absolute');
+                ui.draggable.position({ of: $(this), my: 'center center', at: 'center center' });
 
-            	ui.draggable.removeAttr('class').addClass(currentParentId)
             }
+            //nếu phần tử không phải ở trên bar
             else {
+                //Nếu có class Cha
+                if($('.'+currentParentId).length !=0 ) {
+                    console.log(456)
+                    // $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'left top', at: 'left top' });
+                    ui.draggable.position({ of: $(this), my: 'center center', at: 'center center' });
+                    $('.'+currentParentId).position({ of: $('#'+dataParentOld), my: 'center center', at: 'center center' });
+                    
+                    $('.'+currentParentId).data('ParentOld',dataParentOld)
+                    //xoá class 
+                    // $('.'+currentParentId).removeAttr('class').addClass(dataParentOld)
+                    $('.'+currentParentId).removeClass(currentParentId).addClass(dataParentOld)
 
-            	ui.draggable.removeAttr('class').addClass(currentParentId)
+                    ui.draggable.removeAttr('class').addClass(currentParentId)
+                }
+                // Nếu không có class Cha
+                else {
+                    console.log(789)
+                    // ui.draggable.removeAttr('class').addClass(currentParentId)
+                    ui.draggable.removeClass(dataParentOld).addClass(currentParentId)
+                    ui.draggable.position({ of: $(this), my: 'center center', at: 'center center' });
+                }
             }
+            
 
         }
         function handleCardDropOut(event, ui) {
