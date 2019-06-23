@@ -18,19 +18,20 @@
             // Reset the game
             correctCards = 0;
             $('#tag-choice').html('');
-            $('#cardSlots').html('');
+            $('#answerSlots').html('');
             
             // Create the pile of shuffled cards
-            var numbers = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
-            // numbers.sort(function() { return Math.random() - .5 });
+            var answerWords = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
+            // answerWords.sort(function() { return Math.random() - .5 });
 
-            for (var i = 0; i < numbers.length; i++) {
-                $('<div>' + numbers[i] + '</div>').data({'number': numbers[i],'curParent':'','prevParent':'','onBar': true}).attr('id', 'card' + numbers[i]).appendTo('#tag-choice').draggable({
+            for (var i = 0; i < answerWords.length; i++) {
+                $('<div>' + answerWords[i] + '</div>').data({'number': answerWords[i],'curParent':'','prevParent':'','onBar': true}).attr('id', 'card' + answerWords[i]).appendTo('#tag-choice').draggable({
                     containment: '#content',
                     stack: '#tag-choice div',
                     cursor: 'move',
                     drag: function( event, ui ) {
-                    	// console.log($(this)); 
+                    	// console.log($(this));
+                        $(this).removeClass('inside')  
                     },
                     revert: function(event, ui) {
 			            // on older version of jQuery use "draggable"
@@ -56,7 +57,7 @@
                                 left: '0'
                             });
                             $(this).data('onBar', true)
-                            $(this).removeClass(className)
+                            $(this).removeClass(className+' inside');
 
                         }
                         else {
@@ -71,13 +72,13 @@
             }
 
             // Create the word slots
-            var words = ['Finance', 'Food', 'Health', 'Kids', 'Organisation', 'Rooms', 'Sport', 'Trip', 'Tutor', 'Student'];
-            for (var i = 1; i <= words.length ; i++) {
-            	// console.log('#cardSlots-'+words[i - 1])
-                $('<div>' + words[i - 1] + '</div>').data({'number': words[i - 1], 'onBar': true}).appendTo('#cardSlots-'+words[i - 1]).droppable({
+            var answerGap = [ 'Food', 'Kids', 'Organisation','Finance', 'Health', 'Sport', 'Rooms', 'Trip', 'Student', 'Tutor' ];
+            for (var i = 1; i <= answerGap.length ; i++) {
+            	// console.log('#answerSlots-'+answerGap[i - 1])
+                $('<div class="answer-gap"></div>').data({'number': answerGap[i - 1]}).appendTo('#answerSlots-'+i).droppable({
                     accept: '#tag-choice div',
                     hoverClass: 'hovered',
-                    drop: handleCardDrop,
+                    drop: handleAnswerDrop,
                     over: function(event, ui) {
                         var $this = $(this);
                     },
@@ -104,7 +105,7 @@
 
         }
 
-        function handleCardDrop(event, ui) {
+        function handleAnswerDrop(event, ui) {
         	// console.log($(this).data('number'))
         	// console.log(ui.draggable.data('number'))
         	//element dropped
@@ -146,9 +147,9 @@
 
     		// check if this parent has element
     		
-            var slotNumber = $(this).data('number');
-            var cardNumber = ui.draggable.data('number');
-            var $this = $(this);
+            var userAnswer = $(this).data('number');
+            var systenAnswer = ui.draggable.data('number');
+            // var $this = $(this);
             // console.log($this)
             // var li1 = ui.draggable.text()
             // console.log(li1);
@@ -165,17 +166,24 @@
             // on top of the slot, and prevent it being dragged
             // again
 
-            // if (slotNumber == cardNumber) {
-                ui.draggable.addClass('correct');
-                ui.draggable.draggable('enable');
-                $(this).droppable('enable');
+            if (userAnswer == systenAnswer) {
+                // ui.draggable.addClass('correct');
+                console.log('chinh xac');
+                $(this).data('answer', true);
+                console.log($(this).data('answer'));
+                // ui.draggable.draggable('enable');
+                // $(this).droppable('enable');
                 // ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
-                // $('#cardTutor').position({ of: $('#cardSlots-Rooms'), my: 'left top', at: 'left top' });
+                // $('#cardTutor').position({ of: $('#answerSlots-Rooms'), my: 'left top', at: 'left top' });
                 // ui.draggable.draggable('option', 'revert', false);
                 // correctCards++;
                 // ui.draggable.draggable( "enable" );
                 
-            // }
+            }
+            else {
+                console.log('sai roi');
+                $(this).data('answer', false);
+            }
           
 
             // If all the cards have been placed correctly then display a message
@@ -216,13 +224,13 @@
             	// $('.'+currentParentId).removeAttr('class').addClass('top');
                 //đổi position cho phần tử đã có.
                 $('.'+currentParentId).css('position', 'relative'); 
-                $('.'+currentParentId).data('onBar',true).removeClass(currentParentId);
+                $('.'+currentParentId).data('onBar',true).removeClass(currentParentId+' inside');
 
                 
                 // $('.top').data('onBar',true);
                 // định vị phần tử đang kéo 
                 // ui.draggable.removeAttr('class').addClass(currentParentId)
-                ui.draggable.removeClass(dataParentOld).addClass(currentParentId)
+                ui.draggable.removeClass(dataParentOld).addClass(currentParentId+' inside')
                 //đổi position cho phần tử đang kéo
                 ui.draggable.css('position', 'absolute');
                 ui.draggable.position({ of: $(this), my: 'center center', at: 'center center' });
@@ -240,29 +248,21 @@
                     $('.'+currentParentId).data('ParentOld',dataParentOld)
                     //xoá class 
                     // $('.'+currentParentId).removeAttr('class').addClass(dataParentOld)
-                    $('.'+currentParentId).removeClass(currentParentId).addClass(dataParentOld)
+                    $('.'+currentParentId).removeClass(currentParentId).addClass(dataParentOld+' inside')
 
-                    ui.draggable.removeAttr('class').addClass(currentParentId)
+                    // ui.draggable.removeAttr('class').addClass(currentParentId)
+                    ui.draggable.removeClass(dataParentOld).addClass(currentParentId+' inside')
                 }
                 // Nếu không có class Cha
                 else {
                     console.log(789)
                     // ui.draggable.removeAttr('class').addClass(currentParentId)
-                    ui.draggable.removeClass(dataParentOld).addClass(currentParentId)
+                    ui.draggable.removeClass(dataParentOld).addClass(currentParentId+' inside')
                     ui.draggable.position({ of: $(this), my: 'center center', at: 'center center' });
                 }
             }
             
 
-        }
-        function handleCardDropOut(event, ui) {
-        	// console.log(ui);
-        	// console.log(ui.draggable.offset().top)
-        	// console.log(ui.draggable)
-        	// ui.context.context.offset.top = 999;
-        	// console.log(ui.draggable.offset.top)
-        	console.log(ui.draggable);
-        	// ui.draggable.draggable('option', 'revert', true);
         }
 
     });
